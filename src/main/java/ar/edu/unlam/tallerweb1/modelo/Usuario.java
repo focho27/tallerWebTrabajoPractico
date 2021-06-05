@@ -10,7 +10,7 @@ import java.io.Serializable;
 // busque entities en él
 @Entity
 public class Usuario implements Serializable {
-
+	//probar git
 	// La anotacion id indica que este atributo es el utilizado como clave primaria de la entity, se indica que el valor es autogenerado.
 	@Id
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
