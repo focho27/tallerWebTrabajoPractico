@@ -39,8 +39,8 @@ public class ControladorRegistro {
         ModelMap modelo = new ModelMap();
         // Se agrega al modelo un objeto del tipo Usuario con key 'usuario' para que el mismo sea asociado
         // al model attribute del form que esta definido en la vista 'login'
-       Usuario user= servicioUsuario.buscarUsuarioPorMatricula(usuario.getMatricula());
-        if (usuario != null && servicioUsuario.buscarUsuarioPorMatricula(usuario.getMatricula())==null) {
+       Usuario user= servicioUsuario.buscarUsuarioPorCodigo(usuario.getCodigo());
+        if (usuario != null && servicioUsuario.buscarUsuarioPorCodigo(usuario.getCodigo())==null) {
 
             servicioUsuario.save(usuario);
             return new ModelAndView("redirect:/login");
@@ -54,7 +54,7 @@ public class ControladorRegistro {
     @RequestMapping(path = "/recuperar-contrasena", method = RequestMethod.POST)
     public ModelAndView recuperarContrasenaDos(@ModelAttribute("usuario") Usuario usuario) {
         System.out.println(usuario.getPassword());
-        System.out.println(usuario.getMatricula());
+        System.out.println(usuario.getCodigo());
 
         servicioUsuario.update(usuario);
 
@@ -63,8 +63,8 @@ public class ControladorRegistro {
     @RequestMapping(path = "/recuperar-contrasena/buscador")
     public ModelAndView recuperarContrasena(@RequestParam(name="matricula",required = false) String matricula) {
         ModelMap modelo = new ModelMap();
-        Usuario usuario =servicioUsuario.buscarUsuarioPorMatricula(matricula);
-        System.out.println(usuario.getMatricula());
+        Usuario usuario =servicioUsuario.buscarUsuarioPorCodigo(matricula);
+        System.out.println(usuario.getCodigo());
         System.out.println(usuario.getEmail());
         System.out.println(matricula);
         modelo.put("usuario",usuario);

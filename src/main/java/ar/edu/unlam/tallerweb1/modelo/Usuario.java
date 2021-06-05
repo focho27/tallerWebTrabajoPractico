@@ -14,18 +14,15 @@ public class Usuario implements Serializable {
 	// La anotacion id indica que este atributo es el utilizado como clave primaria de la entity, se indica que el valor es autogenerado.
 	@Id
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	private String matricula;
+	private String codigo;
 	private String email;
 	private String password;
-
-
-
 	private String rol;
 	private String direccion;
 	private String telefono;
 	private String nombre;
 	private String apellido;
-	private String connected;
+
 
 	// para el resto de los atributo no se usan anotaciones entonces se usa el default de hibernate: la columna se llama igual que
 	// el atributo, la misma admite nulos, y el tipo de dato se deduce del tipo de dato de java.
@@ -37,8 +34,8 @@ public class Usuario implements Serializable {
 	public String getPassword() { return password; }
 	public void setPassword(String password) { this.password = password; }
 
-	public String getMatricula() { return matricula; }
-	public void setMatricula(String matricula) { this.matricula = matricula; }
+	public String getCodigo() { return codigo; }
+	public void setCodigo(String codigo) { this.codigo = codigo; }
 
 	public String getRol() { return rol; }
 	public void setRol(String rol) { this.rol = rol; }
@@ -52,8 +49,6 @@ public class Usuario implements Serializable {
 	public String getTelefono() { return telefono; }
 	public void setTelefono(String telefono) { this.telefono = telefono; }
 
-	public String getConnected() { return connected; }
-	public void setConnected(String connected) { this.connected = connected; }
 
     public String getApellido() {
         return apellido;

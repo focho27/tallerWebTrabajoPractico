@@ -1,6 +1,7 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
 import ar.edu.unlam.tallerweb1.modelo.Post;
+import ar.edu.unlam.tallerweb1.modelo.Usuario;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
@@ -13,6 +14,9 @@ public interface RepositorioPost {
     Post postFindById(Long id);
     void save(Post post);
     void delete(Post post);
-    List<Post> findAllByMatricula(String matricula) throws ClassNotFoundException, NamingException, SQLException;
+    List<Post> findAllByMatricula(String matricula);
+    Boolean postFindByEspecialidadAndMatricula(String especialidad, String matricula);
+    void update(Post post);
+    List<Post> postFindByEspecialidad(String especialidad);
 
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;ISO-8859-1;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="es">
 <head>
@@ -12,7 +13,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .bg {
-            background-image: url("/images/barats.jpg");
+            background-image: url("/images/logo/barats.jpg");
             background-position: center center;
         }
     </style>
@@ -28,8 +29,12 @@
             </div>
         </div>
     </div>
+
+    <c:if test="${not empty error}">
+    <h2>${error}</h2>
+    </c:if>
     <div id="loginbox" style="margin:auto;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <form:form action="/proyecto_limpio_spring_war_exploded/create/post" method="POST" modelAttribute="post">
+        <form:form action="/proyecto_limpio_spring_war_exploded/create/post" method="POST" modelAttribute="post" enctype="multipart/form-data">
             <h1 class="fw-bold text-center py-5">Publique su servicio</h1>
             <hr class="colorgraph">
             <br>
@@ -49,6 +54,8 @@
             <form:label path="descripcion" class="form-label"> Descripción del servicio </form:label>
             <br>
             <form:textarea path="descripcion" id="descripcion" type="textarea" class="from-control"  rows="10" cols="72"/>
+            <br>
+            <input id="file" type="file" class="form-control" name="file" />
             <br>
             <button class="btn btn-lg btn-primary btn-block" Type="Submit">Publicar servicio</button>
             <br>

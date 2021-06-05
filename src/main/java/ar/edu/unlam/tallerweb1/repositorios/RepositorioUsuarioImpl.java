@@ -11,10 +11,12 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+
 // implelemtacion del repositorio de usuarios, la anotacion @Repository indica a Spring que esta clase es un componente que debe
 // ser manejado por el framework, debe indicarse en applicationContext que busque en el paquete ar.edu.unlam.tallerweb1.dao
 // para encontrar esta clase.
 @Repository("repositorioUsuario")
+@Transactional
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
 	// Como todo repositorio maneja acciones de persistencia, normalmente estará inyectado el session factory de hibernate
@@ -40,8 +42,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 	}
 
 	@Override
-	public Usuario buscarUsuarioPorMatricula(String matricula) {
-		return sessionFactory.getCurrentSession().get(Usuario.class,matricula);}
+	public Usuario buscarUsuarioPorCodigo(String codigo) {
+		return sessionFactory.getCurrentSession().get(Usuario.class,codigo);}
 
 	@Override
 	public void save(Usuario usuario) {

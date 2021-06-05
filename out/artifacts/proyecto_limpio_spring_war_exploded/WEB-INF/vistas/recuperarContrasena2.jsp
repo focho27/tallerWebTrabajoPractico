@@ -91,7 +91,7 @@
                                 <form:input path="email" id="email" type="hidden" class="form-control"/>
                                 <form:input path="nombre" id="nombre" type="hidden" class="form-control"/>
                                 <form:input path="apellido" id="apellido" type="hidden" class="form-control"/>
-                                <form:input path="matricula" id="matricula" type="hidden" class="form-control"/>
+                                <form:input path="codigo" id="matricula" type="hidden" class="form-control"/>
                                 <form:input path="direccion" id="direccion" type="hidden" class="form-control"/>
                                 <form:input path="telefono" id="telefono" type="hidden" class="form-control"/>
 

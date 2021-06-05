@@ -27,21 +27,13 @@ public class ControladorPerfil {
         this.servicioPost=servicioPost;
     }
 
-    @RequestMapping(path = "/usuario/{matricula}")
-    public ModelAndView verPerfilUsuario(@PathVariable("matricula") String matricula) throws SQLException, NamingException, ClassNotFoundException {
+    @RequestMapping(path = "/usuario/{codigo}")
+    public ModelAndView verPerfilUsuario(@PathVariable("codigo") String codigo)  {
 
         ModelMap modelo = new ModelMap();
-        Usuario usuario =servicioUsuario.buscarUsuarioPorMatricula(matricula);
-        List<Post> posteos=((List<Post>)servicioPost.findAllByMatricula(matricula));
+        Usuario usuario =servicioUsuario.buscarUsuarioPorCodigo(codigo);
+        List<Post> posteos=((List<Post>)servicioPost.findAllByMatricula(codigo));
         modelo.put("usuario",usuario);
-        System.out.println(posteos.size());
-        System.out.println(usuario.getMatricula()+ " matricula usuario");
-
-        System.out.println(posteos.contains(servicioPost.postFindById(1L)));
-        for (Post post: posteos
-             ) {
-            System.out.println(post.getMatricula()+ " MATRICULA DE POST");
-        }
         modelo.put("posts",posteos);
         return new ModelAndView("perfilUsuario", modelo);
     }

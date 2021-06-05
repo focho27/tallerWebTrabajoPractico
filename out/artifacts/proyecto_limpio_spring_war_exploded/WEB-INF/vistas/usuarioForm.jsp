@@ -63,9 +63,9 @@
                 </div>
             </div>
 
-            <form:label path="matricula" class="form-label"> Matrícula </form:label>
+            <form:label path="codigo" class="form-label"> Codigo Usuario </form:label>
             <br>
-            <form:input path="matricula" id="matricula" type="text" class="form-control"/>
+            <form:input path="codigo" id="codigo" type="text" class="form-control"/>
             <br>
 
             <form:label path="direccion" class="form-label"> Dirección </form:label>

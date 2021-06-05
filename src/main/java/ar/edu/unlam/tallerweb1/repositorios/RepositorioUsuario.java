@@ -6,7 +6,7 @@ import ar.edu.unlam.tallerweb1.modelo.Usuario;
 public interface RepositorioUsuario {
 	
 	Usuario consultarUsuario (Usuario usuario);
-	Usuario buscarUsuarioPorMatricula(String matricula);
+	Usuario buscarUsuarioPorCodigo(String matricula);
 	void save(Usuario usuario);
 	void update(Usuario usuario);
 }

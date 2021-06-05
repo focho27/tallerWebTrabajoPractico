@@ -21,7 +21,7 @@ public class Post implements Serializable {
     private String especialidad;
     //private String puntuacion;
     private String matricula;
-
+    private String imagen;
     public Post() {
         this.fecha = LocalDate.now();
     }
@@ -68,6 +68,13 @@ public class Post implements Serializable {
         this.especialidad = especialidad;
     }
 
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
 // public String getPuntuacion() {  return puntuacion; }
 

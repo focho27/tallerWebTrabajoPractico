@@ -61,17 +61,14 @@
                 <form:label path="password" class="form-label"> Contrasena </form:label>
                 <form:input path="password" type="password" id="password" class="form-control"/>
             </div>
-            <div class="mb-4 form-check text-center">
-                <form:checkbox path="connected" value="connected" id="connected" class="form-check-label"/>
-                <form:label path="connected" for="connected" class="form-check-label"> Mantenerme conectado </form:label>
-            </div>
+
             <div class="d-grid text-center">
                 <button class="btn btn-primary btn-block" Type="Submit">Iniciar sesion</button>
             </div>
         </form:form>
             <div class="my-3 text-center">
                 <span>No tenes cuenta? <a href="/proyecto_limpio_spring_war_exploded/crear-usuario"> Registrarme </a></span> <br>
-                <span><a href="/proyecto_limpio_spring_war_exploded/recuperar-contrasena/${usuario.matricula}"> Recuperar contrasena</a></span>
+                <span><a href="/proyecto_limpio_spring_war_exploded/recuperar-contrasena/${usuario.codigo}"> Recuperar contrasena</a></span>
             </div>
 
 

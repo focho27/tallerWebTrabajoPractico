@@ -8,10 +8,12 @@ import ar.edu.unlam.tallerweb1.repositorios.RepositorioUsuario;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.transaction.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,9 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ControladorPostTest extends SpringTest {
-    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+   /* private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
     private final Post POST = post("H12B09","Riki Fort");
+
     @Autowired
     private RepositorioPost repositorioPost;
     @Autowired
@@ -29,6 +32,47 @@ public class ControladorPostTest extends SpringTest {
     @Autowired
     private ControladorPost controladorPost ;
     private ModelAndView mav;
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaBorrarPost(){
+        givenPosteoGuardado(POST);
+        whenBorroElPostConId(POST.getId());
+        thenNoHayPostConId(POST.getId());
+    }
+
+    private void thenNoHayPostConId(Long id) {
+        assertThat(repositorioPost.postFindById(id)).isEqualTo(null);
+        assertThat(mav.getViewName()).isEqualTo("redirect:/posts");
+    }
+
+    private void whenBorroElPostConId(Long id) {
+        mav=controladorPost.deletePost(id);
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaVerDetallePost(){
+        givenPosteoGuardado(POST);
+        whenAccedoAlDetalleConId(POST.getId());
+        thenVeoDetallePost();
+    }
+
+    private void thenVeoDetallePost() {
+        assertThat(mav.getModel().get("post")).isEqualTo(POST);
+        assertThat(mav.getViewName()).isEqualTo("postsDetail");
+    }
+
+    private void whenAccedoAlDetalleConId(Long id) {
+        mav=controladorPost.viewPostById(id);
+    }
+
+    private void givenPosteoGuardado(Post post) {
+        repositorioPost.save(post);
+    }
 
     @Test
     @Transactional
@@ -43,7 +87,7 @@ public class ControladorPostTest extends SpringTest {
     @Rollback
     public void queNoSePuedaCrearUnPosteoPorqueNoHayUsuarioConMatriculaExistente(){
         givePosteoSinGuardarParaUsuarioCreado(USUARIO);
-        whenGuardoPostConMatriculaDiferente(POST);
+        whenGuardoPostConMatriculaDiferente(POST,null);
         thenVeoErrorPostNoCreado("No se puede porque no existe el usaurio con esa matricula");
     }
 
@@ -52,9 +96,9 @@ public class ControladorPostTest extends SpringTest {
         assertThat(mav.getViewName()).isEqualTo("postsForm");
     }
 
-    private void whenGuardoPostConMatriculaDiferente(Post post) {
+    private void whenGuardoPostConMatriculaDiferente(Post post, MultipartFile logo) {
         post.setMatricula("ABK19");
-       mav= controladorPost.guardarPost(post);
+       mav= controladorPost.guardarPost(post,logo);
     }
 
     private void thenVeoPostEnInicio() {
@@ -68,7 +112,7 @@ public class ControladorPostTest extends SpringTest {
     }
 
     private void whenGuardoPost(Post post) {
-        controladorPost.guardarPost(post);
+        controladorPost.guardarPost(post,null);
 
     }
 
@@ -88,5 +132,5 @@ public class ControladorPostTest extends SpringTest {
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;
-    }
+    }*/
 }

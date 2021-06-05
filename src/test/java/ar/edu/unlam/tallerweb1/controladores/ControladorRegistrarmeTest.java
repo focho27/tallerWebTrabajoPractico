@@ -3,14 +3,14 @@ package ar.edu.unlam.tallerweb1.controladores;
 import ar.edu.unlam.tallerweb1.SpringTest;
 import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioUsuario;
-import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 
-import javax.transaction.Transactional;
+
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -116,7 +116,7 @@ public class ControladorRegistrarmeTest extends SpringTest {
 
     private Usuario usuario(String matricula,String email, String clave) {
         Usuario usuario = new Usuario();
-        usuario.setMatricula(matricula);
+        usuario.setCodigo(matricula);
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;

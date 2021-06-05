@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -17,7 +19,7 @@
 </head>
 <body>
 <div class = "container">
-
+    <img src = "TW-nos /../ images/barats.jpg "/>
     <div id="loginbox" style="margin:auto;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <h1 class="fw-bold text-center py-5">Servicios publicados</h1>
         <hr class="colorgraph"><br>
@@ -27,11 +29,22 @@
         </form>
 
 <c:if test="${not empty posts}">
+    <div class="select">
+        <form method="GET" action="/proyecto_limpio_spring_war_exploded/posts/filtro/especialidad">
+        <select name="especialidad" id="filtro" onchange="this.form.submit()">
+            <option value="-" name="-">-</option>
+            <option value="All" name="All">All</option>
+            <option value="Admin" name="Admin">Admin</option>
+            <option value="User" name="User">User</option>
+
+        </select>
+        </form>
+    </div>
     <ul>
         <c:forEach var="post" items="${posts}">
             <br>
             <form:label path="nombre" class="form-label"> Nombre </form:label>
-            <h4  readonly class="form-control-plaintext text-left">${post.nombre}</h4>
+            <a href="/proyecto_limpio_spring_war_exploded/usuario/${post.matricula}"><h4  readonly class="form-control-plaintext text-left">${post.nombre}</h4></a>
             <form:label path="especialidad" class="form-label"> Especialidad </form:label>
             <h4>${post.especialidad}</h4>
             <form:label path="matricula" class="form-label"> Matrícula </form:label>
@@ -40,8 +53,11 @@
             <h4>${post.fecha}</h4>
             <form:label path="descripcion" class="form-label">Descripción del servicio </form:label>
             <h4>${post.descripcion}</h4>
-
-            <a href="/proyecto_limpio_spring_war_exploded/contratar/${post.matricula}">
+            <img src = "TW-nos /../ images/${post.imagen} "/>
+            <a href="/proyecto_limpio_spring_war_exploded/post/delete/${post.id}"> <button class="btn btn-primary mb-2" Type="Submit">Borrar</button></a>
+            <a href="/proyecto_limpio_spring_war_exploded/post/${post.id}"> <button class="btn btn-primary mb-2" Type="Submit">Ver Detalle</button></a>
+            <a href="/proyecto_limpio_spring_war_exploded/post/form/${post.id}"> <button class="btn btn-primary mb-2" Type="Submit">Editar</button></a>
+            <a href="/proyecto_limpio_spring_war_exploded/contratar/${post.id}">
                 <button class="btn btn-primary mb-2" Type="Submit">Contratar</button></a>
             <br>
         </c:forEach>

@@ -49,8 +49,8 @@
 <br>
 <label >Nombre</label>
 <h4 >${usuario.nombre}</h4>
-<label>Matrícula</label>
-<h4 >${usuario.matricula}</h4>
+<label>Codigo</label>
+<h4 >${usuario.codigo}</h4>
 <label>Email</label>
 <h4 >${usuario.email}</h4>
 <label>Dirección</label>
@@ -67,7 +67,8 @@
         <br>
         <button class="btn btn-lg btn-primary btn-block" Type="Submit">Enviar</button>
     </form:form>
-
+        <a href="/proyecto_limpio_spring_war_exploded/contratados">
+            <button class="btn btn-primary mb-2" Type="Submit">Ver contratados</button></a>
     </div>
 
 </div>

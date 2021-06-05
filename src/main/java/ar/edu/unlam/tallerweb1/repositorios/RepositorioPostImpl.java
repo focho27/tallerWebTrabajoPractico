@@ -1,6 +1,7 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
 import ar.edu.unlam.tallerweb1.modelo.Post;
+import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import com.mysql.cj.protocol.Resultset;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,11 +12,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
+
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +45,33 @@ public class RepositorioPostImpl implements RepositorioPost{
     public Post postFindById(Long id) {
         return sessionFactory.getCurrentSession().get(Post.class, id);
     }
+    @Override
+    @Transactional
+    public Boolean postFindByEspecialidadAndMatricula(String especialidad, String matricula) {
+        String sSQL="from Post where (especialidad = :esp AND matricula= :mat)";
+        Query query = sessionFactory.getCurrentSession().createQuery(sSQL);
+
+        query.setParameter("esp",especialidad);
+        query.setParameter("mat",matricula);
+        System.out.println(query.list());
+        return query.list()!=null && query.list().size()>=1?true:false;
+    }
+
+    @Override
+    @Transactional
+    public void update(Post post) {
+        sessionFactory.getCurrentSession().update(post);
+    }
+
+    @Override
+    @Transactional
+    public List<Post> postFindByEspecialidad(String especialidad) {
+        String sSQL="from Post where especialidad = :esp";
+        Query query = sessionFactory.getCurrentSession().createQuery(sSQL);
+
+        query.setParameter("esp",especialidad);
+        return query.list()!=null?query.list():null;
+    }
 
     @Override
     @Transactional
@@ -57,11 +86,11 @@ public class RepositorioPostImpl implements RepositorioPost{
     }
 
     @Override
-    public List<Post> findAllByMatricula( String matricula) throws ClassNotFoundException, NamingException, SQLException {
+    @Transactional
+    public List<Post> findAllByMatricula( String matricula)  {
 
         String sSQL="from Post where matricula = :mat";
         Query query = sessionFactory.getCurrentSession().createQuery(sSQL);
-
         query.setParameter("mat",matricula);
         return query.list()!=null?query.list():null;
     }

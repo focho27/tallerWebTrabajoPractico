@@ -5,21 +5,22 @@ import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class RepositorioUsuarioTest extends SpringTest {
 
-    @Autowired
+   /* @Autowired
     private RepositorioUsuario repositorioUsuario;
 
     public RepositorioUsuarioTest() {
 
     }
 
-    @Test @Transactional @Rollback
+    @Test @Transactional
+    @Rollback
     public void modificarDeberiaCambiarLosDatos(){
         Usuario guardado = givenExisteUsuarioGuardado();
         guardado.setPassword("nueva");
@@ -69,5 +70,5 @@ public class RepositorioUsuarioTest extends SpringTest {
         usuario.setPassword("sasa");
         session().save(usuario);
         return usuario;
-    }
+    }*/
 }

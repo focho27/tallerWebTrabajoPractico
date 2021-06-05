@@ -1,26 +1,30 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 import ar.edu.unlam.tallerweb1.modelo.Post;
-import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.servicios.ServicioPost;
 import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 @Controller
+@SessionAttributes("post")
 public class ControladorPost {
 
     private static ServicioPost servicioPost;
     private ServicioUsuario servicioUsuario;
+
     @Autowired
     public ControladorPost(ServicioPost servicioPost,ServicioUsuario servicioUsuario) {
         this.servicioPost = servicioPost;
@@ -36,6 +40,41 @@ public class ControladorPost {
         this.servicioPost = servicioPost;
     }
 
+  /*  @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
+*/
+  @RequestMapping(value = "/images/{filename:.+}")
+  public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
+
+      Resource recurso = null;
+      try {
+          recurso = servicioPost.load(filename);
+      } catch (MalformedURLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+      }
+      return ResponseEntity.ok()
+              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"")
+              .body(recurso);
+
+  }
+    @RequestMapping(value = "/posts/filtro/images/{filename:.+}")
+    public ResponseEntity<Resource> verImagenesPorFiltro(@PathVariable String filename) {
+
+        Resource recurso = null;
+        try {
+            recurso = servicioPost.load(filename);
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"")
+                .body(recurso);
+
+    }
     @RequestMapping(path="/posts")
     public ModelAndView viewPosts() {
 
@@ -57,20 +96,70 @@ public class ControladorPost {
         return new ModelAndView("postsForm", modelo);
     }
     @RequestMapping(path="/create/post",method = RequestMethod.POST)
-    public ModelAndView guardarPost(@ModelAttribute("post") Post post) {
-
+    public ModelAndView guardarPost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file, SessionStatus sessionStatus) throws MalformedURLException {
         ModelMap modelo = new ModelMap();
+        System.out.println("file ecomo llegaaaaaaaa " + file);
+        System.out.println("file ecomo llegaaaaaaaa " + file.getOriginalFilename());
+        if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0) {
+            if(post.getId() != null && post.getImagen() != null ){
+                servicioPost.delete(post.getImagen());
+            }
+            String uniqueFilename = null;
+            try {
+                uniqueFilename = servicioPost.copy(file);
+            } catch (IOException e) {
 
-        if (post != null &&  servicioUsuario.buscarUsuarioPorMatricula(post.getMatricula())!=null) {
+                e.printStackTrace();
+            }
 
-            servicioPost.save(post);
-            return new ModelAndView("redirect:/posts");
-        } else {
+            post.setImagen(uniqueFilename);
+        }
+        if (post != null &&  servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula())!=null) {
+            if(((servicioPost.postFindByEspecialidad(post.getEspecialidad(),servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula()).getCodigo()))==false) && (post.getId()==null)){
+                if(file!=null&& file.getOriginalFilename().length()>0){
+                servicioPost.save(post);
+                sessionStatus.setComplete();
+                return new ModelAndView("redirect:/posts");}else{
+                    modelo.put("error", "No se puede porque falta que cargue la imagen");
+
+                    return new ModelAndView("postsForm", modelo);
+
+                }
+            }else if((post.getId()!=null )){
+                if((servicioPost.postFindById(post.getId()).getEspecialidad().equals(post.getEspecialidad())) && ((servicioPost.postFindByEspecialidad(post.getEspecialidad(),servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula()).getCodigo()))==true)){
+                    servicioPost.update(post);
+                    sessionStatus.setComplete();
+                    return new ModelAndView("redirect:/posts");
+                }else if((!(servicioPost.postFindById(post.getId()).getEspecialidad().equals(post.getEspecialidad()))) &&  ((servicioPost.postFindByEspecialidad(post.getEspecialidad(),servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula()).getCodigo()))==false)){
+                    servicioPost.update(post);
+                    sessionStatus.setComplete();
+                    return new ModelAndView("redirect:/posts");
+                }else {
+                    modelo.put("error", "No se puede porque ya hay un post con esta especialidad y matricula igual a : "+         servicioPost.postFindByEspecialidad(post.getEspecialidad(),post.getMatricula()));
+
+                }
+            }else {
+                modelo.put("error", "No se puede porque ya hay un post con esta especialidad y matricula igual a : "+         servicioPost.postFindByEspecialidad(post.getEspecialidad(),post.getMatricula()));
+            }
+        } else if( servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula())==null){
             // si el usuario no existe agrega un mensaje de error en el modelo.
             modelo.put("error", "No se puede porque no existe el usaurio con esa matricula");
+        }else{
+            modelo.put("error", "No hay post para guardar");
+
         }
 
 
+
+        return new ModelAndView("postsForm", modelo);
+    }
+    @RequestMapping(path="/post/form/{id}")
+    public ModelAndView editPost(@PathVariable("id")Long id) {
+
+        ModelMap modelo = new ModelMap();
+
+        Post post =servicioPost.postFindById(id);;
+        modelo.put("post", post);
 
         return new ModelAndView("postsForm", modelo);
     }
@@ -90,10 +179,26 @@ public class ControladorPost {
 
 
         Post post =    servicioPost.postFindById(id);
-
+        servicioPost.delete(post.getImagen());
         servicioPost.delete(post);
 
 
         return new ModelAndView("redirect:/posts");
+    }
+    @RequestMapping(path="/posts/filtro/especialidad")
+    public ModelAndView filtrarPorEspecialidad(@RequestParam(value="especialidad",required = true)String especialidad) {
+        System.out.println(especialidad);
+        ModelMap modelo = new ModelMap();
+        if(especialidad.equals("all")){
+            return new ModelAndView("redirect:/posts");
+        }
+        List<Post> posts= servicioPost.postFindByEspecialidad(especialidad);
+        System.out.println(posts);
+        if(posts!=null && posts.size()>=1) {
+            modelo.put("posts", posts);
+            return new ModelAndView("postsHome", modelo);
+        }else {
+            return new ModelAndView("redirect:/posts");
+        }
     }
 }

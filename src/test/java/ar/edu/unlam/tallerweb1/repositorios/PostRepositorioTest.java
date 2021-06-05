@@ -1,18 +1,28 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
 import ar.edu.unlam.tallerweb1.SpringTest;
+import ar.edu.unlam.tallerweb1.controladores.ControladorPerfil;
 import ar.edu.unlam.tallerweb1.modelo.Post;
+import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class PostRepositorioTest  extends SpringTest{
+
+  /*  private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+    private final Post POST = post("H12B09","Riki Fort");
+    private final String MATRICULA= USUARIO.getMatricula();
+
 
 
     @Autowired
@@ -21,6 +31,8 @@ public class PostRepositorioTest  extends SpringTest{
     public PostRepositorioTest( ) {
 
     }
+
+
 
 
     @Test
@@ -35,8 +47,6 @@ public class PostRepositorioTest  extends SpringTest{
         Post buscado = repositorio.postFindById(nuevo.getId());
         assertThat(buscado).isNotNull();
     }
-
-
     @Test @Transactional @Rollback
     public void buscarPorNombre() {
         Post nuevo = new Post();
@@ -87,6 +97,18 @@ public class PostRepositorioTest  extends SpringTest{
         assertThat( repositorio.findAll()).hasSize(2);
     }
 
-
+    public Post post(String matricula, String nombre){
+        Post post = new Post();
+        post.setMatricula(matricula);
+        post.setNombre(nombre);
+        return post;
+    }
+    private Usuario usuario(String matricula,String email, String clave) {
+        Usuario usuario = new Usuario();
+        usuario.setMatricula(matricula);
+        usuario.setEmail(email);
+        usuario.setPassword(clave);
+        return usuario;
+    }*/
 
 }
