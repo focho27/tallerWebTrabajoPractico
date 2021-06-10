@@ -20,9 +20,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ControladorPefilTest extends SpringTest {
- /*   private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
     private final Post POST = post("H12B09","Riki Fort");
-    private final String MATRICULA= USUARIO.getMatricula();
+    private final String MATRICULA= USUARIO.getCodigo();
     @Autowired
     private RepositorioPost repositorioPost;
     @Autowired
@@ -42,7 +42,7 @@ public class ControladorPefilTest extends SpringTest {
     }
 
     private void thenVeoPerfilConUsuarioYSusPost(String usuario,String posts) {
-        List<Post> posteos=repositorioPost.findAllByMatricula(USUARIO.getMatricula());
+        List<Post> posteos=repositorioPost.findAllByMatricula(USUARIO.getCodigo());
 
         assertThat(mav.getModel().get(usuario)).isEqualTo(USUARIO);
         assertThat(mav.getModel().get(posts)).isEqualTo(posteos);
@@ -68,9 +68,9 @@ public class ControladorPefilTest extends SpringTest {
     }
     private Usuario usuario(String matricula,String email, String clave) {
         Usuario usuario = new Usuario();
-        usuario.setMatricula(matricula);
+        usuario.setCodigo(matricula);
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;
-    }*/
+    }
 }

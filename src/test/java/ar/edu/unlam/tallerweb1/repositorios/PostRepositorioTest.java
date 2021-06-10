@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PostRepositorioTest  extends SpringTest{
 
-  /*  private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
     private final Post POST = post("H12B09","Riki Fort");
-    private final String MATRICULA= USUARIO.getMatricula();
+    private final String MATRICULA= USUARIO.getCodigo();
 
 
 
@@ -94,7 +94,7 @@ public class PostRepositorioTest  extends SpringTest{
 
 
         repositorio.delete(nuevo);
-        assertThat( repositorio.findAll()).hasSize(2);
+        assertThat( repositorio.findAll()).hasSize(5);
     }
 
     public Post post(String matricula, String nombre){
@@ -105,10 +105,10 @@ public class PostRepositorioTest  extends SpringTest{
     }
     private Usuario usuario(String matricula,String email, String clave) {
         Usuario usuario = new Usuario();
-        usuario.setMatricula(matricula);
+        usuario.setCodigo(matricula);
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;
-    }*/
+    }
 
 }

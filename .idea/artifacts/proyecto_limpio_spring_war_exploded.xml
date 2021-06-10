@@ -59,6 +59,8 @@
         </element>
       </element>
       <element id="javaee-facet-resources" facet="proyecto-limpio-spring/web/Web" />
+      <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+      <element id="javaee-facet-resources" facet="proyecto-limpio-spring/web/Web2" />
     </root>
   </artifact>
 </component>

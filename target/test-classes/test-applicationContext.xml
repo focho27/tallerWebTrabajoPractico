@@ -7,13 +7,14 @@
 						http://www.springframework.org/schema/tx
 						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<import resource="classpath:test-hibernateContext.xml" />
-	
-	<import resource="classpath:test-hibernateContext.xml" />
+	<import resource="classpath:hibernateContext.xml" />
+
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<context:component-scan base-package="ar.edu.unlam.tallerweb1.controladores" />
 	<context:component-scan base-package="ar.edu.unlam.tallerweb1.repositorios" />
 	<context:component-scan base-package="ar.edu.unlam.tallerweb1.servicios" />
-	<context:component-scan base-package="ar.edu.unlam.tallerweb1.controladores" />
-	<context:component-scan base-package="ar.edu.unlam.tallerweb1.config" />
-	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>
 

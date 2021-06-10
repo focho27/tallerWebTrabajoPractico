@@ -98,9 +98,8 @@ public class ControladorPost {
     @RequestMapping(path="/create/post",method = RequestMethod.POST)
     public ModelAndView guardarPost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file, SessionStatus sessionStatus) throws MalformedURLException {
         ModelMap modelo = new ModelMap();
-        System.out.println("file ecomo llegaaaaaaaa " + file);
-        System.out.println("file ecomo llegaaaaaaaa " + file.getOriginalFilename());
-        if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0) {
+
+        if(file!=null && file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0) {
             if(post.getId() != null && post.getImagen() != null ){
                 servicioPost.delete(post.getImagen());
             }
@@ -179,7 +178,9 @@ public class ControladorPost {
 
 
         Post post =    servicioPost.postFindById(id);
+        if(post.getImagen()!=null){
         servicioPost.delete(post.getImagen());
+        }
         servicioPost.delete(post);
 
 

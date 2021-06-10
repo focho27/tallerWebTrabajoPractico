@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 
-
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ControladorPostTest extends SpringTest {
-   /* private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
     private final Post POST = post("H12B09","Riki Fort");
 
     @Autowired
@@ -71,13 +71,14 @@ public class ControladorPostTest extends SpringTest {
     }
 
     private void givenPosteoGuardado(Post post) {
+        repositorioUsuario.save(USUARIO);
         repositorioPost.save(post);
     }
 
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaCrearUnPosteoParaUsuarioConMatriculaExistente(){
+    public void queSePuedaCrearUnPosteoParaUsuarioConMatriculaExistente() throws MalformedURLException {
         givePosteoSinGuardarParaUsuarioCreado(USUARIO);
         whenGuardoPost(POST);
         thenVeoPostEnInicio();
@@ -85,7 +86,7 @@ public class ControladorPostTest extends SpringTest {
     @Test
     @Transactional
     @Rollback
-    public void queNoSePuedaCrearUnPosteoPorqueNoHayUsuarioConMatriculaExistente(){
+    public void queNoSePuedaCrearUnPosteoPorqueNoHayUsuarioConMatriculaExistente() throws MalformedURLException {
         givePosteoSinGuardarParaUsuarioCreado(USUARIO);
         whenGuardoPostConMatriculaDiferente(POST,null);
         thenVeoErrorPostNoCreado("No se puede porque no existe el usaurio con esa matricula");
@@ -96,9 +97,9 @@ public class ControladorPostTest extends SpringTest {
         assertThat(mav.getViewName()).isEqualTo("postsForm");
     }
 
-    private void whenGuardoPostConMatriculaDiferente(Post post, MultipartFile logo) {
+    private void whenGuardoPostConMatriculaDiferente(Post post, MultipartFile logo) throws MalformedURLException {
         post.setMatricula("ABK19");
-       mav= controladorPost.guardarPost(post,logo);
+       mav= controladorPost.guardarPost(post,logo,null);
     }
 
     private void thenVeoPostEnInicio() {
@@ -111,8 +112,8 @@ public class ControladorPostTest extends SpringTest {
         assertThat(mav.getModel()).isEqualTo(mp);
     }
 
-    private void whenGuardoPost(Post post) {
-        controladorPost.guardarPost(post,null);
+    private void whenGuardoPost(Post post) throws MalformedURLException {
+        controladorPost.guardarPost(post,null,null);
 
     }
 
@@ -128,9 +129,9 @@ public class ControladorPostTest extends SpringTest {
     }
     private Usuario usuario(String matricula,String email, String clave) {
         Usuario usuario = new Usuario();
-        usuario.setMatricula(matricula);
+        usuario.setCodigo(matricula);
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;
-    }*/
+    }
 }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class RepositorioUsuarioTest extends SpringTest {
 
-   /* @Autowired
+    @Autowired
     private RepositorioUsuario repositorioUsuario;
 
     public RepositorioUsuarioTest() {
@@ -52,11 +52,11 @@ public class RepositorioUsuarioTest extends SpringTest {
     }
 
     private Usuario whenBuscoElUsuario(String email) {
-        return repositorioUsuario.buscarUsuarioPorMatricula(givenExisteUsuarioGuardado().getMatricula());
+        return repositorioUsuario.buscarUsuarioPorCodigo(givenExisteUsuarioGuardado().getCodigo());
     }
 
     private void thenElUsuarioSeModifica(Usuario guardado) {
-        Usuario buscado = session().get(Usuario.class, guardado.getMatricula());
+        Usuario buscado = session().get(Usuario.class, guardado.getCodigo());
         assertThat(buscado.getPassword()).isEqualTo(guardado.getPassword());
     }
 
@@ -66,9 +66,10 @@ public class RepositorioUsuarioTest extends SpringTest {
 
     private Usuario givenExisteUsuarioGuardado() {
         Usuario usuario = new Usuario();
+        usuario.setCodigo("ASD123");
         usuario.setEmail("barat@barat.com");
         usuario.setPassword("sasa");
         session().save(usuario);
         return usuario;
-    }*/
+    }
 }

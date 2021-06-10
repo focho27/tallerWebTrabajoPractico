@@ -1,6 +1,7 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 import ar.edu.unlam.tallerweb1.SpringTest;
+import ar.edu.unlam.tallerweb1.modelo.Post;
 import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioPost;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioUsuario;
@@ -14,8 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ControladorContratarTest extends SpringTest {
-   /* private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
-    //private final Post POST = post("H12B09","Riki Fort");
+    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
+    private final Post POST = post(1l,"H12B09","Riki Fort");
+
+
+
     private final String MATRICULA= USUARIO.getCodigo();
     private final String MENSAJE="El mas grande";
     private final String NOMBRE="Ruben";
@@ -33,7 +37,7 @@ public class ControladorContratarTest extends SpringTest {
     @Rollback
     public void queSePuedaContratar()  {
         giveUsuarioConMatriculaValida(USUARIO);
-        whenContratoUnServicio(MATRICULA);
+        whenContratoUnServicio();
         thenVeoDetalleContratacion("usuario");
     }
     @Test
@@ -41,7 +45,7 @@ public class ControladorContratarTest extends SpringTest {
     @Rollback
     public void queSeEnvieMensajePostContratado()  {
         giveUsuarioConMatriculaValida(USUARIO);
-        whenContratoUnServicioYEnvioMensaje(MATRICULA);
+        whenContratoUnServicioYEnvioMensaje();
         thenVeoDetalleContratacionConMensaje("mensaje","nombre");
     }
 
@@ -51,8 +55,8 @@ public class ControladorContratarTest extends SpringTest {
         assertThat(mav.getViewName()).isEqualTo("mensajeContratacion");
     }
 
-    private void whenContratoUnServicioYEnvioMensaje(String matricula) {
-        controladorContratar.contratar(matricula);
+    private void whenContratoUnServicioYEnvioMensaje() {
+        controladorContratar.contratar(POST.getId());
         mav= controladorContratar.mensajeContratacion(MENSAJE,NOMBRE);
     }
 
@@ -61,12 +65,13 @@ public class ControladorContratarTest extends SpringTest {
         assertThat(mav.getViewName()).isEqualTo("detalleContratacion");
     }
 
-    private void whenContratoUnServicio(String matricula) {
-        mav=controladorContratar.contratar(matricula);
+    private void whenContratoUnServicio() {
+        mav=controladorContratar.contratar(POST.getId());
 
     }
     private void giveUsuarioConMatriculaValida(Usuario usuario) {
         repositorioUsuario.save(usuario);
+        repositorioPost.save(POST);
     }
 
 
@@ -76,5 +81,12 @@ public class ControladorContratarTest extends SpringTest {
         usuario.setEmail(email);
         usuario.setPassword(clave);
         return usuario;
-    }*/
+    }
+    private Post post(Long id,String matricula, String nombre) {
+        Post post = new Post();
+        post.setId(id);
+        post.setMatricula(matricula);
+        post.setNombre(nombre);
+        return post;
+    }
 }
