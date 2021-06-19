@@ -94,7 +94,7 @@ public class PostRepositorioTest  extends SpringTest{
 
 
         repositorio.delete(nuevo);
-        assertThat( repositorio.findAll()).hasSize(5);
+        assertThat( repositorio.findAll()).hasSize(2);
     }
 
     public Post post(String matricula, String nombre){
