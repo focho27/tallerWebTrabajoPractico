@@ -2,6 +2,7 @@ package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.modelo.Contratado;
 import ar.edu.unlam.tallerweb1.modelo.Post;
+import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioContratado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,17 +47,23 @@ public class ServicioContratadoImpl implements ServicioContratado {
     }
 
     @Override
-    public void asignarParametros(Post post) {
+    public void asignarParametros(Post post, String codUsuarioConectado) {
         Contratado contratado = new Contratado();
 
-            contratado.setId(post.getId());
-            contratado.setNombre(post.getNombre());
-            contratado.setDescripcion(post.getDescripcion());
-            contratado.setMatricula(post.getMatricula());
-            contratado.setEspecialidad(post.getEspecialidad());
-            contratado.setFecha(post.getFecha());
-            contratado.setImagen(post.getImagen());
-            contratadoDao.save(contratado);
+        contratado.setId(post.getId());
+        contratado.setNombre(post.getNombre());
+        contratado.setDescripcion(post.getDescripcion());
+        contratado.setMatricula(post.getMatricula());
+        contratado.setEspecialidad(post.getEspecialidad());
+        contratado.setFecha(post.getFecha());
+        contratado.setImagen(post.getImagen());
+        contratado.setZona(post.getZona());
+        contratado.setCodContratante(codUsuarioConectado);
+        contratadoDao.save(contratado);
+    }
 
-        }
+    @Override
+    public List<Contratado> findbyCodContratante(String usuarioConectado) {
+        return contratadoDao.findByCodContrantante(usuarioConectado);
+    }
     }

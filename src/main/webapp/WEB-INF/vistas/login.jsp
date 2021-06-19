@@ -12,7 +12,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .bg {
-            background-image: url("/images/barats.jpg");
+            background-puntaje: url("/images/barats.jpg");
             background-position: center center;
         }
         .formContent {

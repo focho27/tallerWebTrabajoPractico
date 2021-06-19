@@ -1,6 +1,7 @@
 package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.modelo.Contratado;
+import ar.edu.unlam.tallerweb1.modelo.Favorito;
 import ar.edu.unlam.tallerweb1.modelo.Post;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioPost;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Service("servicioPost")
 @Transactional
 public class ServicioPostImpl implements ServicioPost{
-    private final static String UPLOADS_FOLDER = "C://Users//gero_//Desktop//TW-nos//src//main//webapp//images";
+    private final static String UPLOADS_FOLDER = "C://Users//Alexis//IdeaProjects//TW-nos//src//main//webapp//images";
     private String uniqueFile="";
     private RepositorioPost postDao;
     @Autowired
@@ -125,7 +126,6 @@ public class ServicioPostImpl implements ServicioPost{
     @Override
     public void asignarParametros(Contratado contratado) {
         Post post = new Post();
-
         post.setId(contratado.getId());
         post.setNombre(contratado.getNombre());
         post.setDescripcion(contratado.getDescripcion());
@@ -133,7 +133,21 @@ public class ServicioPostImpl implements ServicioPost{
         post.setEspecialidad(contratado.getEspecialidad());
         post.setFecha(contratado.getFecha());
         post.setImagen(contratado.getImagen());
+        post.setZona(contratado.getZona());
         postDao.save(post);
+    }
+
+    @Override
+    public void agregarAFavorito(Long postId, String usuarioConectado) {
+            Favorito favorito = new Favorito();
+            favorito.setCodUsuario(usuarioConectado);
+            favorito.setPostFav(postId);
+            postDao.guardarFavorito(favorito);
+        }
+
+    public Boolean buscarUsuarioYPostEnFavorito(Long postId, String usuarioConectado){
+        return postDao.buscarUsuarioYPostEnFavorito(postId, usuarioConectado);
+
     }
 
 
@@ -152,4 +166,5 @@ public class ServicioPostImpl implements ServicioPost{
     public Path getPath(String file) {
         return Paths.get(UPLOADS_FOLDER).resolve(file).toAbsolutePath();
     }
+
 }

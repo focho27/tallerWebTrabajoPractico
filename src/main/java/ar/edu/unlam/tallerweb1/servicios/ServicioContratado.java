@@ -13,5 +13,6 @@ public interface ServicioContratado {
     Contratado postFindById(Long id);
     void save(Contratado contratado);
     void delete(Contratado contratado);
-    void asignarParametros(Post post);
+    void asignarParametros(Post post, String codUsuarioConectado);
+    List<Contratado> findbyCodContratante(String usuarioConectado);
 }

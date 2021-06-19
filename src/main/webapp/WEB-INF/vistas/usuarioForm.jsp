@@ -15,7 +15,7 @@
             background: linear-gradient(to top right, #fc2c77 0%, #6c4079 100%);
         }
         .bg {
-            background-image: url("/images/barats.jpg");
+            background-puntaje: url("/images/barats.jpg");
             background-position: center center;
         }
     </style>

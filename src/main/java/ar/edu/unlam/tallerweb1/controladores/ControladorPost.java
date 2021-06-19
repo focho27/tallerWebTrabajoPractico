@@ -1,13 +1,17 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 import ar.edu.unlam.tallerweb1.modelo.Post;
+import ar.edu.unlam.tallerweb1.modelo.Puntaje;
+import ar.edu.unlam.tallerweb1.servicios.ServicioLogin;
 import ar.edu.unlam.tallerweb1.servicios.ServicioPost;
+import ar.edu.unlam.tallerweb1.servicios.ServicioPuntuacion;
 import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -23,21 +27,16 @@ import java.util.List;
 public class ControladorPost {
 
     private static ServicioPost servicioPost;
-    private ServicioUsuario servicioUsuario;
+    private static ServicioUsuario servicioUsuario;
+    private static ServicioPuntuacion servicioPuntuacion;
+    private static ServicioLogin servicioLogin;
 
     @Autowired
-    public ControladorPost(ServicioPost servicioPost,ServicioUsuario servicioUsuario) {
+    public ControladorPost(ServicioPost servicioPost, ServicioUsuario servicioUsuario, ServicioPuntuacion servicioPuntuacion, ServicioLogin servicioLogin) {
         this.servicioPost = servicioPost;
         this.servicioUsuario=servicioUsuario;
-    }
-
-
-    public static ServicioPost getServicioPost() {
-        return servicioPost;
-    }
-
-    public void setServicioPost(ServicioPost servicioPost) {
-        this.servicioPost = servicioPost;
+        this.servicioPuntuacion = servicioPuntuacion;
+        this.servicioLogin = servicioLogin;
     }
 
   /*  @Bean
@@ -60,6 +59,9 @@ public class ControladorPost {
               .body(recurso);
 
   }
+
+
+
     @RequestMapping(value = "/posts/filtro/images/{filename:.+}")
     public ResponseEntity<Resource> verImagenesPorFiltro(@PathVariable String filename) {
 
@@ -75,13 +77,18 @@ public class ControladorPost {
                 .body(recurso);
 
     }
+
+
+
     @RequestMapping(path="/posts")
     public ModelAndView viewPosts() {
 
         ModelMap modelo = new ModelMap();
 
         List<Post> posts = servicioPost.findAll();
+        List<Puntaje> puntajes = servicioPuntuacion.findAll();
         modelo.put("posts", posts);
+        modelo.put("puntajes", puntajes);
 
         return new ModelAndView("postsHome", modelo);
     }
@@ -96,7 +103,8 @@ public class ControladorPost {
         return new ModelAndView("postsForm", modelo);
     }
     @RequestMapping(path="/create/post",method = RequestMethod.POST)
-    public ModelAndView guardarPost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file, SessionStatus sessionStatus) throws MalformedURLException {
+    public ModelAndView guardarPost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file, SessionStatus sessionStatus)
+            throws MalformedURLException {
         ModelMap modelo = new ModelMap();
 
         if(file!=null && file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0) {
@@ -117,6 +125,7 @@ public class ControladorPost {
             if(((servicioPost.postFindByEspecialidad(post.getEspecialidad(),servicioUsuario.buscarUsuarioPorCodigo(post.getMatricula()).getCodigo()))==false) && (post.getId()==null)){
                 if(file!=null&& file.getOriginalFilename().length()>0){
                 servicioPost.save(post);
+                servicioPuntuacion.save(post.getMatricula(), post.getEspecialidad());
                 sessionStatus.setComplete();
                 return new ModelAndView("redirect:/posts");}else{
                     modelo.put("error", "No se puede porque falta que cargue la imagen");
@@ -152,6 +161,9 @@ public class ControladorPost {
 
         return new ModelAndView("postsForm", modelo);
     }
+
+
+
     @RequestMapping(path="/post/form/{id}")
     public ModelAndView editPost(@PathVariable("id")Long id) {
 
@@ -162,6 +174,8 @@ public class ControladorPost {
 
         return new ModelAndView("postsForm", modelo);
     }
+
+
     @RequestMapping(path="/post/{id}")
     public ModelAndView viewPostById(@PathVariable("id")Long id) {
 
@@ -194,12 +208,21 @@ public class ControladorPost {
             return new ModelAndView("redirect:/posts");
         }
         List<Post> posts= servicioPost.postFindByEspecialidad(especialidad);
+        List<Puntaje> puntajes = servicioPuntuacion.findAll();
         System.out.println(posts);
         if(posts!=null && posts.size()>=1) {
             modelo.put("posts", posts);
+            modelo.put("puntajes", puntajes);
             return new ModelAndView("postsHome", modelo);
         }else {
             return new ModelAndView("redirect:/posts");
         }
+    }
+
+    @RequestMapping(path = "/post/favorito/{id}")
+    public ModelAndView agregarAFavorito(@PathVariable ("id") Long postId){
+      String usuarioConectado = servicioLogin.obtenerConectado();
+      servicioPost.agregarAFavorito(postId, usuarioConectado);
+      return new ModelAndView("redirect:/posts");
     }
 }

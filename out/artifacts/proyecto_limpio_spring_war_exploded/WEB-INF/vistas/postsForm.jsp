@@ -13,7 +13,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .bg {
-            background-image: url("/images/logo/barats.jpg");
+            background-puntaje: url("/images/logo/barats.jpg");
             background-position: center center;
         }
     </style>
@@ -45,7 +45,15 @@
             <br>
             <form:label path="especialidad" class="form-label"> Especialidad </form:label>
             <br>
-            <form:input path="especialidad" type="text" id="especialidad" class="form-control"/>
+            <form:select path="especialidad" id="especialidad" class="form-control">
+                <form:options items="${post.opcionesEspecialidad()}"></form:options>
+            </form:select>
+            <br>
+            <form:label path="zona" class="form-label"> Zona </form:label>
+            <br>
+            <form:select path="zona" id="zona" class="form-control">
+                <form:options items="${post.opcionesZona()}"></form:options>
+            </form:select>
             <br>
             <form:label path="matricula" class="form-label"> Matrícula </form:label>
             <br>

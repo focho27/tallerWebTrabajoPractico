@@ -13,4 +13,5 @@ public interface RepositorioContratado {
     Contratado postFindById(Long id);
     void save(Contratado contratado);
     void delete(Contratado contratado);
+    List<Contratado> findByCodContrantante(String usuarioConectado);
 }

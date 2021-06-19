@@ -20,6 +20,9 @@ public class Contratado implements Serializable {
     private String especialidad;
     private String matricula;
     private String imagen;
+    private String zona;
+    private String codContratante;
+
     public Contratado() {
         this.fecha = LocalDate.now();
     }
@@ -55,7 +58,7 @@ public class Contratado implements Serializable {
     public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre) {
+    public void setNombre(String titulo) {
         this.nombre = nombre;
     }
 
@@ -69,8 +72,13 @@ public class Contratado implements Serializable {
     public String getImagen() {
         return imagen;
     }
-
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
+
+    public String getCodContratante() { return codContratante; }
+    public void setCodContratante(String codContratante) { this.codContratante = codContratante; }
+
+    public String getZona() { return zona; }
+    public void setZona(String zona) { this.zona = zona; }
 }

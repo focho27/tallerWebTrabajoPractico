@@ -32,4 +32,8 @@ public interface ServicioPost {
     List<Post> postFindByEspecialidad(String especialidad);
     void asignarParametros(Contratado contratado);
 
+
+
+    void agregarAFavorito(Long postId, String usuarioConectado);
+    Boolean buscarUsuarioYPostEnFavorito(Long postId, String usuarioConectado);
 }

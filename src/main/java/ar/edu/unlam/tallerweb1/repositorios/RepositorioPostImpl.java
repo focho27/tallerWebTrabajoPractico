@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
+import ar.edu.unlam.tallerweb1.modelo.Favorito;
 import ar.edu.unlam.tallerweb1.modelo.Post;
 import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import com.mysql.cj.protocol.Resultset;
@@ -71,6 +72,24 @@ public class RepositorioPostImpl implements RepositorioPost{
 
         query.setParameter("esp",especialidad);
         return query.list()!=null?query.list():null;
+    }
+
+    @Override
+    public void guardarFavorito(Favorito favorito) {
+        if (buscarUsuarioYPostEnFavorito(favorito.getPostFav(), favorito.getCodUsuario()) == true) {
+
+        }
+        else{
+            sessionFactory.getCurrentSession().save(favorito);
+        }
+    }
+
+    @Override
+    public Boolean buscarUsuarioYPostEnFavorito(Long postId, String usuarioConectado) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from Favorito where (codUsuario = :cod AND postFav = :pf)");
+        query.setParameter("cod", usuarioConectado);
+        query.setParameter("pf", postId);
+        return query.list().size()==1?true:false;
     }
 
     @Override

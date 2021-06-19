@@ -4,6 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 // Clase que modela el concepto de Usuario, la anotacion @Entity le avisa a hibernate que esta clase es persistible
 // el paquete ar.edu.unlam.tallerweb1.modelo esta indicado en el archivo hibernateCOntext.xml para que hibernate
@@ -22,6 +25,7 @@ public class Usuario implements Serializable {
 	private String telefono;
 	private String nombre;
 	private String apellido;
+	private Long favorito = 0L;
 
 
 	// para el resto de los atributo no se usan anotaciones entonces se usa el default de hibernate: la columna se llama igual que
@@ -49,14 +53,15 @@ public class Usuario implements Serializable {
 	public String getTelefono() { return telefono; }
 	public void setTelefono(String telefono) { this.telefono = telefono; }
 
-
     public String getApellido() {
         return apellido;
     }
-
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+	public Long getFavorito() { return favorito; }
+	public void setFavorito(Long favorito) { this.favorito = favorito; }
 
 
 }

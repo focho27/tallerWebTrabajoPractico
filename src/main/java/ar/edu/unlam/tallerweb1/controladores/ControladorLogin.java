@@ -59,7 +59,7 @@ public class ControladorLogin {
 		// hace una llamada a otro action a través de la URL correspondiente a ésta
 		Usuario usuarioBuscado = servicioLogin.consultarUsuario(usuario);
 		if (usuarioBuscado != null) {
-			request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+			servicioLogin.almacenarConectado(usuarioBuscado.getCodigo());
 			return new ModelAndView("redirect:/posts");
 		} else {
 			// si el usuario no existe agrega un mensaje de error en el modelo.

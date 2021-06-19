@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 public class RepositorioUsuarioTest extends SpringTest {
+    private final Usuario USUARIO = usuario("H12B09","prueba@gmail.com", "123123");
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
@@ -19,57 +20,72 @@ public class RepositorioUsuarioTest extends SpringTest {
 
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     @Rollback
-    public void modificarDeberiaCambiarLosDatos(){
-        Usuario guardado = givenExisteUsuarioGuardado();
-        guardado.setPassword("nueva");
-        whenModificoElUsuario(guardado);
-        thenElUsuarioSeModifica(guardado);
+    public void poderGuardarUsuario(){
+        givenUsuarioValido();
+        whenGuardoUsuario(USUARIO);
+        thenLoPuedoBuscarPorId(USUARIO.getCodigo());
     }
 
-    @Test @Transactional @Rollback
-    public void buscarUsuarioQUeExisteDevuelveUnUsuario(){
-        Usuario guardado = givenExisteUsuarioGuardado();
-        Usuario buscado = whenBuscoElUsuario(guardado.getEmail());
-        thenElUsuarioExiste(buscado);
+    private void thenLoPuedoBuscarPorId(String codigo) {
+        assertThat(repositorioUsuario.buscarUsuarioPorCodigo(codigo)).isEqualTo(USUARIO);
     }
 
-    @Test @Transactional @Rollback
+    private void whenGuardoUsuario(Usuario usuario) {
+        repositorioUsuario.save(usuario);
+    }
+
+    private void givenUsuarioValido() {
+
+    }
+    @Test
+    @Transactional
+    @Rollback
     public void buscarUsuarioQUeNoExisteNoDevuelveUnUsuario(){
-        Usuario guardado = givenExisteUsuarioGuardado();
-
-        Usuario buscado = whenBuscoElUsuario(guardado.getEmail()+"kdkdkdkdkd");
-        thenElUsuarioNoExiste(buscado);
+        givenUsuarioValido();
+        whenNoGuardoUsuario();
+        thenNoEncuentraUsuario("asd123asdasd");
     }
 
-    private void thenElUsuarioNoExiste(Usuario buscado) {
-        assertThat(buscado).isNull();
+    private void thenNoEncuentraUsuario(String codigo) {
+        assertThat(repositorioUsuario.buscarUsuarioPorCodigo(codigo)).isNull();
     }
 
-    private void thenElUsuarioExiste(Usuario buscado) {
-        assertThat(buscado).isNotNull();
+    private void whenNoGuardoUsuario() {
+
+
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaActualizarUsuario(){
+        givenUsuarioGuardado();
+        whenActualizoUsuario("sasa@gmail.com");
+        thenVeoUsuarioActualizado(USUARIO.getCodigo());
     }
 
-    private Usuario whenBuscoElUsuario(String email) {
-        return repositorioUsuario.buscarUsuarioPorCodigo(givenExisteUsuarioGuardado().getCodigo());
+    private void thenVeoUsuarioActualizado(String codigo) {
+        assertThat(repositorioUsuario.buscarUsuarioPorCodigo(codigo).getEmail()).isEqualTo("sasa@gmail.com");
     }
 
-    private void thenElUsuarioSeModifica(Usuario guardado) {
-        Usuario buscado = session().get(Usuario.class, guardado.getCodigo());
-        assertThat(buscado.getPassword()).isEqualTo(guardado.getPassword());
+    private void whenActualizoUsuario(String s) {
+        USUARIO.setEmail(s);
+        repositorioUsuario.update(USUARIO);
     }
 
-    private void whenModificoElUsuario(Usuario usuario) {
-        repositorioUsuario.update(usuario);
+    private void givenUsuarioGuardado() {
+        repositorioUsuario.save(USUARIO);
     }
 
-    private Usuario givenExisteUsuarioGuardado() {
+
+    private Usuario usuario(String matricula,String email, String clave) {
         Usuario usuario = new Usuario();
-        usuario.setCodigo("ASD123");
-        usuario.setEmail("barat@barat.com");
-        usuario.setPassword("sasa");
-        session().save(usuario);
+        usuario.setCodigo(matricula);
+        usuario.setEmail(email);
+        usuario.setPassword(clave);
         return usuario;
     }
+
 }

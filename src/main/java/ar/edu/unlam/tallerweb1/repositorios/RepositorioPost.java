@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
+import ar.edu.unlam.tallerweb1.modelo.Favorito;
 import ar.edu.unlam.tallerweb1.modelo.Post;
 import ar.edu.unlam.tallerweb1.modelo.Usuario;
 
@@ -18,5 +19,9 @@ public interface RepositorioPost {
     Boolean postFindByEspecialidadAndMatricula(String especialidad, String matricula);
     void update(Post post);
     List<Post> postFindByEspecialidad(String especialidad);
+
+    void guardarFavorito(Favorito favorito);
+
+    Boolean buscarUsuarioYPostEnFavorito(Long postId, String usuarioConectado);
 
 }

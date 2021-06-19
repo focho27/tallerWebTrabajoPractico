@@ -47,4 +47,12 @@ public class RepositorioContratadoImpl implements RepositorioContratado {
         sessionFactory.getCurrentSession().delete(contratado);
     }
 
+    @Override
+    public List<Contratado> findByCodContrantante(String usuarioConectado) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from Contratado where codContratante = :usuarioConectado");
+        query.setParameter("usuarioConectado", usuarioConectado);
+        List<Contratado> contratados = query.list();
+        return contratados;
+    }
+
 }

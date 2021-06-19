@@ -20,6 +20,7 @@ import ar.edu.unlam.tallerweb1.modelo.Usuario;
 public class ServicioLoginImpl implements ServicioLogin {
 
 	private RepositorioUsuario servicioLoginDao;
+	private String codigoUsuarioConectado;
 
 	@Autowired
 	public ServicioLoginImpl(RepositorioUsuario servicioLoginDao){
@@ -29,6 +30,15 @@ public class ServicioLoginImpl implements ServicioLogin {
 	@Override
 	public Usuario consultarUsuario (Usuario usuario) {
 		return servicioLoginDao.consultarUsuario(usuario);
+	}
+
+	@Override
+	public void almacenarConectado(String codigo) {
+		this.codigoUsuarioConectado = codigo;
+	}
+
+	public String obtenerConectado(){
+		return codigoUsuarioConectado;
 	}
 
 }
